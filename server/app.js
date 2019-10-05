@@ -2,7 +2,8 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
       app = express(),
-      postRoutes = require('./routes/posts');
+      postRoutes = require('./routes/posts'),
+      userRoutes = require('./routes/users');
 
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 
 module.exports = app;

@@ -1,7 +1,8 @@
 const express = require('express'),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
-      app = express();
+      app = express(),
+      postRoutes = require('./routes/posts');
 
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
@@ -12,5 +13,6 @@ mongoose.connect('mongodb+srv://hythr:' + process.env.MONGO_PASSWORD + '@cluster
 }); // all the sharing feels so weird
 
 app.use(bodyParser.json());
+app.use('/api/posts', postRoutes);
 
 module.exports = app;

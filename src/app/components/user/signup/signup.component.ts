@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signup.component.sass']
 })
 export class SignupComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
   }
 
+  onSignup(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+  }
 }

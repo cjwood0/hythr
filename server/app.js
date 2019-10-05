@@ -13,6 +13,14 @@ mongoose.connect('mongodb+srv://hythr:' + process.env.MONGO_PASSWORD + '@cluster
 }); // all the sharing feels so weird
 
 app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS, PUT");
+  next();
+});
+
 app.use('/api/posts', postRoutes);
 
 module.exports = app;

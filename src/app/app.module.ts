@@ -20,6 +20,7 @@ import {
   MatProgressSpinnerModule,
   MatListModule
 } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import {
     MatToolbarModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
-    MatListModule
+    MatListModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

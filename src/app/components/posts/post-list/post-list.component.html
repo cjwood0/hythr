@@ -3,6 +3,10 @@
     <mat-list-item>
       <mat-card>
           {{post.name}} - {{post.content}}
+          <mat-action-row>
+            <button mat-raised-button color="accent">LIKE</button>
+            <button mat-raised-button color="accent">FOLLOW</button>
+          </mat-action-row>
       </mat-card>
     </mat-list-item>
   </mat-list>

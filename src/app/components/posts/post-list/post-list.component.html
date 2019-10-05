@@ -1,1 +1,10 @@
-<mat-card class="no-posts">There are no posts!</mat-card>
+<mat-accordion multi *ngIf="posts.length > 0">
+  <mat-list *ngFor="let post of posts">
+    <mat-list-item>
+      <mat-card>
+          {{post.name}} - {{post.content}}
+      </mat-card>
+    </mat-list-item>
+  </mat-list>
+</mat-accordion>
+<mat-card class="no-posts" *ngIf="posts.length === 0">There are no posts!</mat-card>

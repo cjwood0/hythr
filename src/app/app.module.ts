@@ -8,8 +8,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { ErrorComponent } from './components/error/error.component';
 import { PostCreateComponent } from './components/posts/post-create/post-create.component';
 import { PostListComponent } from './components/posts/post-list/post-list.component';
-import { SignupComponent } from './components/auth/signup/signup.component';
-import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/user/signup/signup.component';
+import { LoginComponent } from './components/user/login/login.component';
 
 import {
   MatInputModule,

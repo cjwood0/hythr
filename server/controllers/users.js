@@ -5,14 +5,15 @@ const User = require('../models/user'),
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
+            name: req.body.name,
             email: req.body.email,
             password: hash
           });
 
     user.save().then(result => {
-      res.status(200).json({ result });
+      res.status(201).json({ result });
     }).catch(err => {
-      res.status(500).json({ message: 'Invalid credentials' });
+      res.status(500).json({ err });
     });
   });
 };

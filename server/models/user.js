@@ -3,7 +3,8 @@ const mongoose = require('mongoose'),
       userSchema = mongoose.Schema({
         name: { type: String, required: true, unique: true}, // unique doesn't validate, just improves efficiency, why is it called a validator
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true }
+        password: { type: String, required: true },
+        following: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'User'}]
       });
 
 userSchema.plugin(uniqueValidator); // lies

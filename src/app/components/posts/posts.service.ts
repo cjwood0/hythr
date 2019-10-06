@@ -31,4 +31,15 @@ export class PostsService {
   getPostUpdateListener() {
     return this.postsUpdated.asObservable();
   }
+
+  follow(followId: string) {
+    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/follow', {followerId: localStorage.getItem('userId'), followId})
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
+  unfollow(followId: string) {
+    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/unfollow', {followerId: localStorage.getItem('userId'), followId});
+  }
 }

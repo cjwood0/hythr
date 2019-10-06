@@ -4,5 +4,7 @@ const express = require('express'),
 
 router.post('/signup', UsersController.createUser);
 router.post('/login', UsersController.loginUser);
+router.put('/follow', UsersController.follow);
+router.put('/unfollow', UsersController.unfollow);
 
 module.exports = router;

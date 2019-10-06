@@ -2,6 +2,8 @@ const User = require('../models/user'),
       bcrypt = require('bcrypt'),
       jwt = require('jsonwebtoken');
 
+getUser = (userId) => User.findById(userId).then(user => user).catch(err => null);
+
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
@@ -41,3 +43,25 @@ exports.loginUser = (req, res, next) => {
     return res.status(401).json({ message: 'Nice try' });
   });
 };
+
+exports.follow = (req, res, next) => {
+  const follower = getUser(req.body.followerId),
+        followee = getUser(req.body.followId);
+
+  if(!follower || !followee) return res.status(401).json({ message: "Failed to follow"});
+  console.log(follower);
+  follower.following.addToSet(followee._id);
+
+  return res.status(200).json({ following: follower.following });
+}
+
+exports.unfollow = (req, res, next) => {
+  const follower = getUser(req.body.followerId),
+        followee = getUser(req.body.followId);
+
+  if(!follower || !followee) return res.status(401).json({ message: "Failed to unfollow"});
+
+  follower.following.pull(followee._id);
+
+  return res.status(200).json({ following: follower.following });
+}

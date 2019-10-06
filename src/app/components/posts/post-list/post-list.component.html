@@ -5,7 +5,7 @@
           {{post.name}} - {{post.content}}
           <span class="spacer"></span>
           <mat-action-row>
-            <button mat-button color="accent">FOLLOW</button>
+            <button mat-button color="accent" (click)="follow(post.creator)">FOLLOW</button>
           </mat-action-row>
       </mat-card>
     </mat-list-item>

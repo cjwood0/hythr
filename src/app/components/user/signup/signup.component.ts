@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-signup',
@@ -7,7 +8,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./signup.component.sass']
 })
 export class SignupComponent implements OnInit {
-  constructor() { }
+  constructor(public userService: UserService) { }
 
   ngOnInit() {
   }
@@ -16,5 +17,7 @@ export class SignupComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    console.log(form);
+    this.userService.createUser(form.value.name, form.value.email, form.value.password);
   }
 }

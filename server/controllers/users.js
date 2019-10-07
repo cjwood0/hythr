@@ -71,7 +71,7 @@ exports.unfollow = (req, res, next) => {
     getUser(req.body.followId).then(user2 => {
       followee = user2;
 
-      if(!follower || !followee) return res.status(401).json({ message: "Failed to follow"});
+      if(!follower || !followee) return res.status(401).json({ message: "Failed to unfollow"});
 
       follower.following.pull(followee._id);
 

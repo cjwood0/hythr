@@ -1,5 +1,12 @@
 # Hythr
 
+## TODO
+
+1. Finish auth implementation on client and server (guards, activated routes, conditional displays on client)
+2. Finish post creation
+3. Figure out how Karma works
+4. Figure out how protractor works
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.6.
 
 ## Development server

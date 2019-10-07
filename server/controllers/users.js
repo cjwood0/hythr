@@ -2,7 +2,7 @@ const User = require('../models/user'),
       bcrypt = require('bcrypt'),
       jwt = require('jsonwebtoken');
 
-getUser = (userId) => User.findById(userId).then(user => user).catch(err => null);
+getUser = (userId) => User.findById(userId).then(user => user);
 
 exports.createUser = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
@@ -45,23 +45,37 @@ exports.loginUser = (req, res, next) => {
 };
 
 exports.follow = (req, res, next) => {
-  const follower = getUser(req.body.followerId),
-        followee = getUser(req.body.followId);
+  let follower = null,
+      followee = null;
 
-  if(!follower || !followee) return res.status(401).json({ message: "Failed to follow"});
-  console.log(follower);
-  follower.following.addToSet(followee._id);
+  getUser(req.body.followerId).then(user => {
+    follower = user;
+    getUser(req.body.followId).then(user2 => {
+      followee = user2;
 
-  return res.status(200).json({ following: follower.following });
+      if(!follower || !followee) return res.status(401).json({ message: "Failed to follow"});
+
+      follower.following.addToSet(followee._id);
+
+      res.status(200).json({ following: follower.following });
+    });
+  });
 }
 
 exports.unfollow = (req, res, next) => {
-  const follower = getUser(req.body.followerId),
-        followee = getUser(req.body.followId);
+  let follower = null,
+      followee = null;
 
-  if(!follower || !followee) return res.status(401).json({ message: "Failed to unfollow"});
+  getUser(req.body.followerId).then(user => {
+    follower = user;
+    getUser(req.body.followId).then(user2 => {
+      followee = user2;
 
-  follower.following.pull(followee._id);
+      if(!follower || !followee) return res.status(401).json({ message: "Failed to follow"});
 
-  return res.status(200).json({ following: follower.following });
+      follower.following.pull(followee._id);
+
+      res.status(200).json({ following: follower.following });
+    });
+  });
 }

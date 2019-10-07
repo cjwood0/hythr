@@ -1,1 +1,9 @@
-<p>post-create works!</p>
+<mat-card>
+  <form [formGroup]="form" (submit)="onCreatePost()">
+    <mat-form-field>
+      <textarea matInput rows="6" formControlName="content" placeholder="Content"></textarea>
+      <mat-error *ngIf="form.get('content').invalid">Please enter tontent</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Save Post</button>
+  </form>
+</mat-card>

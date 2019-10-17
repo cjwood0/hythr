@@ -16,6 +16,14 @@ export class PostsService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  createPost(content: string) {
+    const postData = new FormData();
+    postData.append('content', content);
+    this.http.post<{Post}>(BACKEND_URL, postData).subscribe((responseData) => {
+      this.router.navigate(['/']);
+    });
+  }
+
   getPosts() {
     this.http.get<{ posts: any[], postCount: number }>(BACKEND_URL).pipe(map(postData => {
       return {

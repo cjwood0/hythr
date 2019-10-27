@@ -36,6 +36,8 @@ export class UserService {
     const userData: UserData = { name, email, password };
     this.httpClient.post(BACKEND_URL + '/signup', userData).subscribe(response => {
       this.router.navigate(['/']);
+    }, error => {
+      this.userStatusListener.next(false);
     });
   }
 

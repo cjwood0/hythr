@@ -23,6 +23,7 @@ import {
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorInterceptor } from './error-interceptor';
+import { UserInterceptor } from './components/user/user-interceptor';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { ErrorInterceptor } from './error-interceptor';
     ReactiveFormsModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

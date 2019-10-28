@@ -25,7 +25,7 @@ export class PostsService {
   getPosts() {
     this.http.get<{ posts: any[], postCount: number }>(BACKEND_URL).pipe(map(postData => {
       return {
-        posts: postData.posts.map(p => ({ id: p._id, name: p.name, content: p.content, creator: p.creator })),
+        posts: postData.posts.map(({_id: id, name, content, creator }) => ({ id, name, content, creator })),
         postCount: postData.postCount
       };
     })).subscribe(mappedPosts => {

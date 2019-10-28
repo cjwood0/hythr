@@ -3,7 +3,7 @@ const Post = require('../models/post');
 exports.createPost = (req, res, next) => {
   const post = new Post({
           content: req.body.content,
-          creator: req.user.id
+          creator: req.userData.userId
         });
 
   post.save().then(newPost => {

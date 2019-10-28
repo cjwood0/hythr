@@ -6,23 +6,15 @@ exports.createPost = (req, res, next) => {
           creator: req.userData.userId
         });
 
-  post.save().then(newPost => {
-    res.status(201).json({
-      id: newPost._id,
-      content: newPost.content
-    });
-  }).catch(error => {
-    res.status(500).json({ message: 'Creating post failed' });
-  });
+  post.save()
+    .then(({_id: id, content}) => { res.status(201).json({ id, content })})
+    .catch(error => { res.status(500).json({ message: 'Creating post failed' })});
 };
 
 exports.getPost = (req, res, next) => {
   Post.findById(req.params.id).then(post => {
-    if (post) { // I hate lint
-      res.status(200).json(post);
-    } else {
-      res.status(404).json({ message: 'Post not found' });
-    }
+    if (post) res.status(200).json(post);
+    else res.status(404).json({ message: 'Post not found' });
   });
 };
 
@@ -33,9 +25,7 @@ exports.getPosts = (req, res, next) => {
 
   let posts;
 
-  if (pageSize && currentPage) {
-    postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
-  }
+  if (pageSize && currentPage) postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
 
   postQuery.then(documents => { // I wish they were records...
     posts = documents;

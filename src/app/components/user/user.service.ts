@@ -10,6 +10,7 @@ const BACKEND_URL = environment.apiUrl + '/users';
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private token: string;
+  private tokenTimer: any;
   private userStatusListener = new Subject<boolean>();
   private isAuthenticated = false;
   private userId: string;
@@ -57,11 +58,34 @@ export class UserService {
         this.userId = response.userId;
         this.userStatusListener.next(true);
         this.setUserData(token, expirationDate, this.userId);
+        //this.setAuthTimer(expiresInDuration);
         this.router.navigate(['/']);
       }
     }, error => {
       this.userStatusListener.next(false);
     });
+  }
+
+  setAuthTimer(duration: number) {
+    this.tokenTimer = setTimeout(() => {
+      this.logout();
+    }, duration * 1000);
+  }
+
+  autoAuthUser() {
+    const userInformation = this.getUserData();
+    if (!userInformation) {
+      return;
+    }
+    const now = new Date();
+    const expiresIn = userInformation.expirationDate.getTime() - now.getTime();
+    if (expiresIn > 0) {
+      this.token = userInformation.token;
+      this.isAuthenticated = true;
+      this.userId = userInformation.userId;
+      this.setAuthTimer(expiresIn / 1000);
+      this.userStatusListener.next(true);
+    }
   }
 
   logout() {
@@ -70,6 +94,7 @@ export class UserService {
     this.isAuthenticated = false;
     this.userStatusListener.next(false);
     this.cleartUserData();
+    //clearTimeout(this.tokenTimer);
     this.router.navigate(['/']);
   }
 

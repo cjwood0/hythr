@@ -17,8 +17,7 @@ export class PostsService {
   constructor(private http: HttpClient, private router: Router) { }
 
   createPost(content: string) {
-    const postData: Post = { id: null, name: null, content, creator: null};
-    this.http.post<{Post}>(BACKEND_URL, postData).subscribe((responseData) => {
+    this.http.post<{any}>(BACKEND_URL, {content}).subscribe((responseData) => {
       this.router.navigate(['/']);
     });
   }

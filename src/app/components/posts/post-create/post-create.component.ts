@@ -12,9 +12,6 @@ export class PostCreateComponent implements OnInit {
 
   constructor(public postsService: PostsService) { }
 
-  posts: Post[];
-  post: Post;
-
   ngOnInit() {
   }
 

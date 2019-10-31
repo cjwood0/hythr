@@ -3,22 +3,15 @@ const User = require('../models/user');
 
 exports.createPost = (req, res, next) => {
   const creator = req.userData.userId;
-  let name = ''
-  User.findOne({ _id: creator }).then(user => {
-    if(user) {
-      name = user.name
-    }
-  }).then(result => {
-    const post = new Post({
+
+  const post = new Post({
           content: req.body.content,
-          creator,
-          name
+          creator: req.userData.userId,
         });
 
-    post.save()
-      .then(({_id: id, content}) => { res.status(201).json({ id, content })})
-      .catch(error => { res.status(500).json({ message: 'Creating post failed' })});
-    })
+  post.save()
+    .then(({_id: id, content}) => { res.status(201).json({ id, content })})
+    .catch(error => { res.status(500).json({ message: 'Creating post failed' })});
 };
 
 exports.getPost = (req, res, next) => {
@@ -31,7 +24,7 @@ exports.getPost = (req, res, next) => {
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pagesize, // neat trick
         currentPage = +req.query.page,
-        postQuery = Post.find(); // TODO: figure out if is this lazy
+        postQuery = Post.find().populate('creator', 'name'); // TODO: figure out if is this lazy
 
   let posts;
 

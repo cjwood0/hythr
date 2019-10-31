@@ -1,14 +1,24 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 exports.createPost = (req, res, next) => {
-  const post = new Post({
+  const creator = req.userData.userId;
+  let name = ''
+  User.findOne({ _id: creator }).then(user => {
+    if(user) {
+      name = user.name
+    }
+  }).then(result => {
+    const post = new Post({
           content: req.body.content,
-          creator: req.userData.userId
+          creator,
+          name
         });
 
-  post.save()
-    .then(({_id: id, content}) => { res.status(201).json({ id, content })})
-    .catch(error => { res.status(500).json({ message: 'Creating post failed' })});
+    post.save()
+      .then(({_id: id, content}) => { res.status(201).json({ id, content })})
+      .catch(error => { res.status(500).json({ message: 'Creating post failed' })});
+    })
 };
 
 exports.getPost = (req, res, next) => {

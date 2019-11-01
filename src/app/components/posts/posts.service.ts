@@ -23,8 +23,8 @@ export class PostsService {
     });
   }
 
-  getPosts() {
-    this.http.get<{ posts: any[], postCount: number }>(BACKEND_URL).pipe(map(postData => {
+  getPosts(listType: string) {
+    this.http.get<{ posts: any[], postCount: number }>(BACKEND_URL + '/' + listType).pipe(map(postData => {
       return {
         posts: postData.posts.map(({_id: id, name, content, creator, createdAt }) => ({ id, name, content, creator, createdAt })),
         postCount: postData.postCount

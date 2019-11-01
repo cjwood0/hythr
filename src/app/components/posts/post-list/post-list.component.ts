@@ -3,6 +3,7 @@ import { Post } from '../post.model';
 import { PostsService } from '../posts.service';
 import { Subscription  } from 'rxjs';
 import { UserService } from '../../user/user.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -10,7 +11,7 @@ import { UserService } from '../../user/user.service';
   styleUrls: ['./post-list.component.sass']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  constructor(public postsService: PostsService, private userService: UserService) { }
+  constructor(public postsService: PostsService, private userService: UserService, public route: ActivatedRoute) { }
 
   private postsSub: Subscription;
   private userStatusSubscription: Subscription;
@@ -20,9 +21,16 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   following: string[] = [];
   totalPosts = 0;
+  listType = '';
 
   ngOnInit() {
-    this.postsService.getPosts();
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('type')) {
+        this.listType = paramMap.get('type');
+      }
+      this.postsService.getPosts(this.listType);
+    });
+
     this.postsSub = this.postsService.getPostUpdateListener().subscribe((postData: {posts: Post[], postCount: number}) => {
       this.totalPosts = postData.postCount;
       this.posts = postData.posts;

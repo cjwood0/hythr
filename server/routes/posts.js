@@ -4,7 +4,8 @@ const express = require('express'),
       PostsController = require('../controllers/posts');
 
 router.post("", checkAuth, PostsController.createPost);
-router.get('/:id', PostsController.getPost);
+router.get('hy/:id', PostsController.getPost);
 router.get('', PostsController.getPosts);
+router.get('/:type', checkAuth, PostsController.getPosts);
 
 module.exports = router;

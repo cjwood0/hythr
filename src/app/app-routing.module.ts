@@ -9,6 +9,7 @@ import { UserGuard } from './components/user/user.guard';
 
 const routes: Routes = [
   { path: '', component: PostListComponent },
+  { path: 'list/:type', component: PostListComponent, canActivate: [UserGuard] },
   { path: 'create', component: PostCreateComponent, canActivate: [UserGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent }

@@ -10,6 +10,10 @@ import { PostCreateComponent } from './components/posts/post-create/post-create.
 import { PostListComponent } from './components/posts/post-list/post-list.component';
 import { SignupComponent } from './components/user/signup/signup.component';
 import { LoginComponent } from './components/user/login/login.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ErrorInterceptor } from './error-interceptor';
+import { UserInterceptor } from './components/user/user-interceptor';
 
 import {
   MatInputModule,
@@ -21,10 +25,6 @@ import {
   MatListModule,
   MatDialogModule
 } from '@angular/material';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ErrorInterceptor } from './error-interceptor';
-import { UserInterceptor } from './components/user/user-interceptor';
 
 
 @NgModule({
@@ -54,8 +54,8 @@ import { UserInterceptor } from './components/user/user-interceptor';
     MatDialogModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: UserInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent],
   entryComponents: [ErrorComponent]

@@ -38,7 +38,7 @@ exports.loginUser = (req, res, next) => {
 
     const token = jwt.sign({ email: foundUser.email, userId: foundUser._id }, process.env.JWT_KEY, { expiresIn: '7d' });
 
-    res.status(200).json({ token, expiresIn: 7 * 24 * 60 * 60 * 1000, userId: foundUser._id });
+    res.status(200).json({ token, expiresIn: 7 * 24 * 60 * 60 * 1000, userId: foundUser._id, following: foundUser.following });
   }).catch(error => {
     return res.status(401).json({ message: 'Nice try' });
   });
@@ -57,7 +57,9 @@ exports.follow = (req, res, next) => {
 
       follower.following.addToSet(followee._id);
 
-      res.status(200).json({ following: follower.following });
+      follower.save().then(response => {
+        res.status(200).json({ following: follower.following });
+      });
     });
   });
 }
@@ -74,8 +76,9 @@ exports.unfollow = (req, res, next) => {
       if(!follower || !followee) return res.status(401).json({ message: "Failed to unfollow"});
 
       follower.following.pull(followee._id);
-
-      res.status(200).json({ following: follower.following });
+      follower.save().then(response => {
+        res.status(200).json({ following: follower.following });
+      });
     });
   });
 }

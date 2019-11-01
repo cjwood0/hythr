@@ -12,10 +12,12 @@ export class UserService {
   private token: string;
   private tokenTimer: any;
   private userStatusListener = new Subject<boolean>();
+  private followingListener = new Subject<{following: string[]}>();
   private isAuthenticated = false;
   private userId: string;
+  private following: string[] = [];
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getToken() {
     return this.token;
@@ -33,9 +35,33 @@ export class UserService {
     return this.userId;
   }
 
+  getFollowing() {
+    return this.following;
+  }
+
+  getFollowingListener() {
+    return this.followingListener.asObservable();
+  }
+
+  follow(followId: string) {
+    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/follow', {followerId: localStorage.getItem('userId'), followId})
+      .subscribe(response => {
+        this.following = response.following;
+        this.followingListener.next({following: [...this.following]});
+      });
+  }
+
+  unfollow(followId: string) {
+    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/unfollow', {followerId: localStorage.getItem('userId'), followId})
+    .subscribe(response => {
+      this.following = response.following;
+      this.followingListener.next({following: [...this.following]});
+    });
+  }
+
   createUser(name: string, email: string, password: string) {
-    const userData: UserData = { name, email, password };
-    this.httpClient.post(BACKEND_URL + '/signup', userData).subscribe(response => {
+    const userData: UserData = { name, email, password, following: [] };
+    this.http.post(BACKEND_URL + '/signup', userData).subscribe(response => {
       this.router.navigate(['/']);
     }, error => {
       this.userStatusListener.next(false);
@@ -44,8 +70,10 @@ export class UserService {
 
   login(email: string, password: string) {
     const name = '';
-    const userData: UserData = { name, email, password };
-    this.httpClient.post<{token: string, expiresIn: number, userId: string}>(BACKEND_URL + '/login', userData)
+    let following: string[];
+    following = [];
+    const userData: UserData = { name, email, password, following };
+    this.http.post<{token: string, expiresIn: number, userId: string, following: []}>(BACKEND_URL + '/login', userData)
     .subscribe(response => {
       const token = response.token;
       this.token = token;
@@ -53,7 +81,7 @@ export class UserService {
         const now = new Date();
         const expiresInDuration = response.expiresIn;
         const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-
+        this.following = response.following;
         this.isAuthenticated = true;
         this.userId = response.userId;
         this.userStatusListener.next(true);

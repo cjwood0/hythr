@@ -13,7 +13,8 @@ const BACKEND_URL = environment.apiUrl + '/posts';
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
-
+  private followingUpdated = new Subject<{following: string[]}>();
+  private following: string[] = [];
   constructor(private http: HttpClient, private router: Router) { }
 
   createPost(content: string) {
@@ -38,14 +39,7 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
-  follow(followId: string) {
-    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/follow', {followerId: localStorage.getItem('userId'), followId})
-      .subscribe(response => {
-        console.log(response);
-      });
-  }
-
-  unfollow(followId: string) {
-    this.http.put<{ following: string[] }>(environment.apiUrl + '/users/unfollow', {followerId: localStorage.getItem('userId'), followId});
+  getFollowingUpdateListener() {
+    return this.followingUpdated.asObservable();
   }
 }

@@ -14,9 +14,11 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   private postsSub: Subscription;
   private userStatusSubscription: Subscription;
+  private followingSubscription: Subscription;
   userIsAuthenticated = false;
   userId: string;
   posts: Post[] = [];
+  following: string[] = [];
   totalPosts = 0;
 
   ngOnInit() {
@@ -27,22 +29,32 @@ export class PostListComponent implements OnInit, OnDestroy {
     });
 
     this.userIsAuthenticated = this.userService.getIsAuthenticated();
+    this.userId = this.userService.getUserId();
     this.userStatusSubscription = this.userService.getUserStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
-      this.userId = this.userService.getUserId();
+    });
+
+    this.following = this.userService.getFollowing();
+    this.followingSubscription = this.userService.getFollowingListener().subscribe((followingData: {following: string[]}) => {
+      this.following = followingData.following;
     });
   }
 
   ngOnDestroy() {
     this.postsSub.unsubscribe();
+    this.followingSubscription.unsubscribe();
     this.userStatusSubscription.unsubscribe();
   }
 
+  isFollowing(creator: string) {
+    return this.following.includes(creator);
+  }
+
   follow(followId: string) {
-    this.postsService.follow(followId);
+    this.userService.follow(followId);
   }
 
   unfollow(followId: string) {
-    this.postsService.unfollow(followId);
+    this.userService.unfollow(followId);
   }
 }

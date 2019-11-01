@@ -1,12 +1,16 @@
 <mat-accordion multi *ngIf="posts.length > 0">
   <mat-list *ngFor="let post of posts">
+    <div></div>
     <mat-list-item>
-      <mat-card>
-          {{post.creator.name}} - {{post.content}}
-          <span class="spacer"></span>
-          <mat-action-row>
-            <button mat-button color="accent" (click)="follow(post.creator._id)">FOLLOW</button>
-          </mat-action-row>
+      <mat-card >
+          <mat-card-title> {{post.creator.name}}</mat-card-title>
+          <mat-card-content>
+              {{post.content}}
+              <mat-action-row *ngIf="userIsAuthenticated">
+                <button mat-button color="accent" *ngIf="post.creator._id != userId && !isFollowing(post.creator._id)" (click)="follow(post.creator._id)">FOLLOW</button>
+                <button mat-button color="accent" *ngIf="post.creator._id != userId && isFollowing(post.creator._id)" (click)="unfollow(post.creator._id)">UNFOLLOW</button>
+              </mat-action-row >
+          </mat-card-content>
       </mat-card>
     </mat-list-item>
   </mat-list>

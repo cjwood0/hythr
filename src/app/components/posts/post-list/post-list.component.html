@@ -3,7 +3,7 @@
     <div></div>
     <mat-list-item>
       <mat-card >
-          <mat-card-title> {{post.creator.name}}</mat-card-title>
+          <mat-card-title> {{post.creator.name}} <span class="created">{{post.createdAt | date: 'yyyy-MM-dd h:mm:ss'}}</span></mat-card-title>
           <mat-card-content>
               {{post.content}}
               <mat-action-row *ngIf="userIsAuthenticated">

@@ -24,7 +24,7 @@ exports.getPost = (req, res, next) => {
 exports.getPosts = (req, res, next) => {
   const pageSize = +req.query.pagesize, // neat trick
         currentPage = +req.query.page,
-        postQuery = Post.find().populate('creator', 'name'); // TODO: figure out if is this lazy
+        postQuery = Post.find().sort('-createdAt').populate('creator', 'name'); // TODO: figure out if is this lazy
 
   let posts;
 

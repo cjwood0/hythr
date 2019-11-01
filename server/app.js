@@ -5,12 +5,9 @@ const express = require('express'),
       postRoutes = require('./routes/posts'),
       userRoutes = require('./routes/users');
 
-var distDir = __dirname + "/dist/";
-app.use(express.static(distDir));
-
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect(process.env.MONGODB_URI || ('mongodb+srv://hythr:' + process.env.MONGO_PASSWORD + '@cluster0-lnezh.mongodb.net/hythr?w=majority'), { useNewUrlParser: true }).then(() => {
+mongoose.connect('mongodb+srv://hythr:' + process.env.MONGO_PASSWORD + '@cluster0-lnezh.mongodb.net/hythr?w=majority', { useNewUrlParser: true }).then(() => {
   console.log("Connected to DB");
 }).catch(() => {
   console.log("connection failed!"); // wat do

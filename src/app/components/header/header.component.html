@@ -6,6 +6,9 @@
       <a mat-button routerLink="/list/myhy" routerLinkActive="mat-accent">My Hy</a>
     </li>
     <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="/list/following" routerLinkActive="mat-accent">Following</a>
+    </li>
+    <li *ngIf="userIsAuthenticated">
       <a mat-button routerLink="/create" routerLinkActive="mat-accent">New Post</a>
     </li>
     <li *ngIf="!userIsAuthenticated">

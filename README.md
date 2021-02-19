@@ -1,6 +1,8 @@
 # Hythr
 
-Hythr is a Twitter clone that utilizes the MEAN (MongoDB, Express.js, Angular, Node) stack. The choice of this stack was motivated by increasing usage of Angular and the popularity of Node/Express. While a NoSQL database is not ideal for this use case, this application serves as an example implementation of the complete stack. 
+Hythr is a Twitter clone that utilizes the MEAN (MongoDB, Express.js, Angular, Node) stack. This was a personal project to continuuisly learn new technologoies. 
+
+The choice of this stack was motivated by increasing usage of Angular and the popularity of Node/Express. While a NoSQL database is not ideal for this use case, this application serves as an example implementation of the complete stack. 
 
 ## Getting Started
 
